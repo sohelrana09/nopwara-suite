@@ -29,6 +29,14 @@ The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all eight 
 
 Each plugin README has the full list of settings.
 
+## Update
+
+Upload the new zip the same way, then restart. Plugins whose `plugin.json` version changed run their update step on restart.
+
+nopCommerce won't upload a theme that already exists, so the upload ends with "A theme with 'Nopwara' system name is already defined". The plugins are still updated, because the theme comes last in the archive. To update the theme too, either:
+- copy the `Themes/Nopwara` folder from the zip over `Themes/Nopwara` on the server, then restart the application, or
+- delete `Themes/Nopwara` on the server, restart the application (nopCommerce reads the theme list at startup), then upload the zip.
+
 ## Build the zip yourself
 
 You need Git, Python 3, rsync and the .NET 10 SDK.

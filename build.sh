@@ -39,6 +39,7 @@ PLUGINS=(
     "nopwara-bundles Nop.Plugin.Misc.NopwaraBundles"
     "nopwara-webhooks Nop.Plugin.Misc.NopwaraWebhooks"
     "nopwara-google-signin Nop.Plugin.ExternalAuth.Google"
+    "nopwara-mega-menu Nop.Plugin.Widgets.NopwaraMegaMenu"
 )
 THEME_REPO="nopwara-theme"
 

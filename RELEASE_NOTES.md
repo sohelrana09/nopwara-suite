@@ -1,4 +1,4 @@
-The Nopwara theme and all eight Nopwara plugins in one upload for nopCommerce 5.00.
+The Nopwara theme and all nine Nopwara plugins in one upload for nopCommerce 5.00.
 
 **Install:** download `nopwara-suite-<version>.zip` below, then follow the [install steps](https://github.com/sohelrana09/nopwara-suite#install).
 
@@ -13,3 +13,4 @@ The Nopwara theme and all eight Nopwara plugins in one upload for nopCommerce 5.
 | Product bundles | [nopwara-bundles](https://github.com/sohelrana09/nopwara-bundles) |
 | Webhooks | [nopwara-webhooks](https://github.com/sohelrana09/nopwara-webhooks) |
 | Google sign-in | [nopwara-google-signin](https://github.com/sohelrana09/nopwara-google-signin) |
+| Mega menu | [nopwara-mega-menu](https://github.com/sohelrana09/nopwara-mega-menu) |

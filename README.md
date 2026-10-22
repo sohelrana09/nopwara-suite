@@ -1,6 +1,6 @@
 # Nopwara Suite for nopCommerce
 
-The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all eight Nopwara plugins, compiled and packed into **one zip** for nopCommerce 5.00. Upload it once in admin instead of installing nine items one by one.
+The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all nine Nopwara plugins, compiled and packed into **one zip** for nopCommerce 5.00. Upload it once in admin instead of installing ten items one by one.
 
 **Download:** [latest release](https://github.com/sohelrana09/nopwara-suite/releases/latest)
 
@@ -15,12 +15,13 @@ The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all eight 
 | [Product bundles](https://github.com/sohelrana09/nopwara-bundles) | "Frequently bought together" with a bundle discount |
 | [Webhooks](https://github.com/sohelrana09/nopwara-webhooks) | Signed webhooks for orders, customers and products |
 | [Google sign-in](https://github.com/sohelrana09/nopwara-google-signin) | "Continue with Google" |
+| [Mega menu](https://github.com/sohelrana09/nopwara-mega-menu) | Badges, icons, "View all", promo banners, featured products and content columns in the main menu |
 
 ## Install
 
 1. In admin, go to **Configuration → Local plugins → Upload plugin or theme** and upload `nopwara-suite-<version>.zip`.
    The archive holds a theme, so nopCommerce restarts itself. Hosts that don't restart stopped apps, such as `dotnet run`, need the site started again.
-2. On the same page, click **Install** on each of the eight Nopwara plugins (each click only queues it), then click **Restart application** once.
+2. On the same page, click **Install** on each of the nine Nopwara plugins (each click only queues it), then click **Restart application** once.
 3. Go to **Configuration → Settings → General settings** and choose **Nopwara** as the store theme.
 4. Open the **Nopwara single-page checkout** plugin's configuration page and tick **Enabled**.
 5. Optional:
@@ -49,7 +50,7 @@ The script:
 1. downloads nopCommerce source at a pinned commit (the plugins reference Nop.Web);
 2. clones the theme and plugin repos into it;
 3. builds each plugin in Release;
-4. writes `out/nopwara-suite-1.0.0.zip` with an `uploadedItems.json` that lists all nine items.
+4. writes `out/nopwara-suite-1.0.0.zip` with an `uploadedItems.json` that lists all ten items.
 
 It packs only runtime files, with no symbols or `node_modules`.
 

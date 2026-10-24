@@ -1,6 +1,8 @@
 # Nopwara Suite for nopCommerce
 
-The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all nine Nopwara plugins, compiled and packed into **one zip** for nopCommerce 5.00. Upload it once in admin instead of installing ten items one by one.
+The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all nine Nopwara plugins, compiled and packed into **one zip**. Upload it once in admin instead of installing ten items one by one.
+
+Each release has two zips: `nopwara-suite-<version>-nop5.00.zip` for nopCommerce 5.00 and `nopwara-suite-<version>-nop4.90.zip` for nopCommerce 4.90.8. Pick the one that matches your store. On 4.90 a few 5.00-only features are left out (phone login, delivery date, search history, product 3D models, per-vendor cart).
 
 **Download:** [latest release](https://github.com/sohelrana09/nopwara-suite/releases/latest)
 
@@ -19,12 +21,13 @@ The [Nopwara theme](https://github.com/sohelrana09/nopwara-theme) and all nine N
 
 ## Install
 
-1. In admin, go to **Configuration → Local plugins → Upload plugin or theme** and upload `nopwara-suite-<version>.zip`.
+1. In admin, go to **Configuration → Local plugins → Upload plugin or theme** and upload the zip for your nopCommerce version.
    The archive holds a theme, so nopCommerce restarts itself. Hosts that don't restart stopped apps, such as `dotnet run`, need the site started again.
 2. On the same page, click **Install** on each of the nine Nopwara plugins (each click only queues it), then click **Restart application** once.
 3. Go to **Configuration → Settings → General settings** and choose **Nopwara** as the store theme.
 4. Open the **Nopwara single-page checkout** plugin's configuration page and tick **Enabled**.
-5. Optional:
+5. Optional colour preset: in **Configuration → Settings → All settings** add `nopwarathemesettings.colorpreset` = `medical` for the clinical teal palette.
+6. Optional:
    - add your Google OAuth keys to **Google sign-in** and enable it in Configuration → External authentication;
    - add endpoints in **Configuration → Webhooks**.
 
@@ -40,17 +43,18 @@ nopCommerce won't upload a theme that already exists, so the upload ends with "A
 
 ## Build the zip yourself
 
-You need Git, Python 3, rsync and the .NET 10 SDK.
+You need Git, Python 3, rsync and the .NET 10 SDK (plus the .NET 9 SDK for the 4.90 zip).
 
 ```bash
-./build.sh 1.0.0
+./build.sh 1.2.0
+NOP_VERSION=4.90 NOP_REF=release-4.90.8 REPO_REF=nop-4.90 ./build.sh 1.2.0
 ```
 
 The script:
 1. downloads nopCommerce source at a pinned commit (the plugins reference Nop.Web);
 2. clones the theme and plugin repos into it;
 3. builds each plugin in Release;
-4. writes `out/nopwara-suite-1.0.0.zip` with an `uploadedItems.json` that lists all ten items.
+4. writes `out/nopwara-suite-1.2.0-nop5.00.zip` (or `-nop4.90.zip`) with an `uploadedItems.json` that lists all ten items.
 
 It packs only runtime files, with no symbols or `node_modules`.
 
@@ -59,11 +63,12 @@ It packs only runtime files, with no symbols or `node_modules`.
 | `NOP_REF` | the nopCommerce 5.00 `develop` commit the plugins were tested on | Set it to the final 5.00 release tag once nopCommerce publishes it |
 | `NOP_REPO` | `https://github.com/nopSolutions/nopCommerce.git` | A fork or local path |
 | `GITHUB_OWNER` | `sohelrana09` | Where the Nopwara repos live |
-| `REPO_REF` | `main` | Branch or tag of the Nopwara repos |
+| `REPO_REF` | `main` | Branch or tag of the Nopwara repos (`nop-4.90` for the 4.90 port) |
+| `NOP_VERSION` | `5.00` | nopCommerce version the zip is for: the zip name and `uploadedItems.json` |
 
 ## Releases
 
-Push a tag and the **Release** workflow builds the zip and attaches it to a GitHub Release:
+Push a tag and the **Release** workflow builds both zips (5.00 from `main`, 4.90 from `nop-4.90`) and attaches them to a GitHub Release:
 
 ```bash
 git tag v1.0.1
@@ -71,7 +76,7 @@ git push origin v1.0.1
 ```
 
 To ship a plugin fix:
-1. Commit it to the plugin's repo and bump `Version` in its `plugin.json`, so stores can update it.
+1. Commit it to the plugin's repo, on `main` and on `nop-4.90`, and bump `Version` in its `plugin.json`, so stores can update it.
 2. Tag a new suite version.
 
 ## License

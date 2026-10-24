@@ -1,4 +1,4 @@
-# Builds nopwara-suite-<version>.zip and attaches it to a GitHub Release.
+# Builds nopwara-suite-<version>-nop5.00.zip and nopwara-suite-<version>-nop4.90.zip and attaches both to a GitHub Release.
 # Push a tag like v1.0.0, or run it by hand (Actions > Release > Run workflow).
 name: Release
 
@@ -20,9 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # nopCommerce 5.00 builds with .NET 10, 4.90 with .NET 9 (its global.json picks the SDK)
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: |
+            9.0.x
+            10.0.x
 
       - name: Version
         id: version
@@ -31,7 +34,14 @@ jobs:
           [ -n "$version" ] || version="${GITHUB_REF_NAME#v}"
           echo "value=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Build the suite
+      - name: Build the suite for nopCommerce 5.00
+        run: ./build.sh "${{ steps.version.outputs.value }}"
+
+      - name: Build the suite for nopCommerce 4.90
+        env:
+          NOP_VERSION: "4.90"
+          NOP_REF: release-4.90.8
+          REPO_REF: nop-4.90
         run: ./build.sh "${{ steps.version.outputs.value }}"
 
       - name: Publish the release
@@ -39,9 +49,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="v${{ steps.version.outputs.value }}"
-          zip="out/nopwara-suite-${{ steps.version.outputs.value }}.zip"
+          zips=(out/nopwara-suite-${{ steps.version.outputs.value }}-nop*.zip)
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" "$zip" --clobber
+            gh release upload "$tag" "${zips[@]}" --clobber
           else
-            gh release create "$tag" "$zip" --title "Nopwara Suite $tag" --notes-file RELEASE_NOTES.md --target "$GITHUB_SHA"
+            gh release create "$tag" "${zips[@]}" --title "Nopwara Suite $tag" --notes-file RELEASE_NOTES.md --target "$GITHUB_SHA"
           fi

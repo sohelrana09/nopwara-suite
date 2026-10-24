@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# Builds nopwara-suite-<version>.zip: the Nopwara theme and the eight Nopwara plugins, compiled and packed
-# for nopCommerce's multi-item upload (Admin > Configuration > Local plugins > "Upload plugin or theme").
+# Builds nopwara-suite-<version>-nop<nopCommerce version>.zip: the Nopwara theme and the nine Nopwara plugins,
+# compiled and packed for nopCommerce's multi-item upload (Admin > Configuration > Local plugins > "Upload plugin or theme").
 #
-#   ./build.sh 1.0.0
+#   ./build.sh 1.2.0                                                              # nopCommerce 5.00
+#   NOP_VERSION=4.90 NOP_REF=release-4.90.8 REPO_REF=nop-4.90 ./build.sh 1.2.0    # nopCommerce 4.90 (needs the .NET 9 SDK)
 #
 # Plugins are compiled against nopCommerce source (they reference Nop.Web), so the script downloads it,
 # clones every Nopwara repo into it, builds each plugin in Release and copies only the files a store needs.
@@ -12,7 +13,8 @@
 #   NOP_REPO      nopCommerce git repository (default: the official one; a local path works too)
 #   NOP_REF       commit, tag or branch to build against (default: the develop commit the plugins were tested with)
 #   GITHUB_OWNER  owner of the Nopwara repos (default: sohelrana09)
-#   REPO_REF      branch or tag of the Nopwara repos (default: main)
+#   REPO_REF      branch or tag of the Nopwara repos (default: main; nop-4.90 holds the 4.90 port)
+#   NOP_VERSION   nopCommerce version the zip is for: names the zip and fills uploadedItems.json (default: 5.00)
 
 set -euo pipefail
 
@@ -21,13 +23,14 @@ NOP_REPO="${NOP_REPO:-https://github.com/nopSolutions/nopCommerce.git}"
 NOP_REF="${NOP_REF:-77d112f365e210ebdfa2f9790c8202a0e3b1c74e}"
 GITHUB_OWNER="${GITHUB_OWNER:-sohelrana09}"
 REPO_REF="${REPO_REF:-main}"
+NOP_VERSION="${NOP_VERSION:-5.00}"
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 WORK="$ROOT/work"
 NOP="$WORK/nopCommerce"
 STAGE="$WORK/stage"
 OUT="$ROOT/out"
-ZIP="$OUT/nopwara-suite-$VERSION.zip"
+ZIP="$OUT/nopwara-suite-$VERSION-nop$NOP_VERSION.zip"
 
 # repo name, project folder (src/Plugins/<folder>)
 PLUGINS=(
@@ -87,14 +90,14 @@ for entry in "${PLUGINS[@]}"; do
         --exclude 'Nop.Web' --exclude 'Nop.Web.*' --exclude '*.pdb' \
         "$output/" "$STAGE/Plugins/$system_name/"
 
-    items_json+="$separator{\"Type\":\"Plugin\",\"SystemName\":\"$system_name\",\"SupportedVersion\":\"5.00\",\"DirectoryPath\":\"Plugins/$system_name/\"}"
+    items_json+="$separator{\"Type\":\"Plugin\",\"SystemName\":\"$system_name\",\"SupportedVersion\":\"$NOP_VERSION\",\"DirectoryPath\":\"Plugins/$system_name/\"}"
     separator=","
     echo "  Plugins/$system_name"
 done
 
 rsync -a --exclude '.git' --exclude '.gitignore' --exclude 'node_modules' \
     "$NOP/src/Presentation/Nop.Web/Themes/Nopwara/" "$STAGE/Themes/Nopwara/"
-items_json+=",{\"Type\":\"Theme\",\"SystemName\":\"Nopwara\",\"SupportedVersion\":\"5.00\",\"DirectoryPath\":\"Themes/Nopwara/\"}]"
+items_json+=",{\"Type\":\"Theme\",\"SystemName\":\"Nopwara\",\"SupportedVersion\":\"$NOP_VERSION\",\"DirectoryPath\":\"Themes/Nopwara/\"}]"
 echo "  Themes/Nopwara"
 
 python3 -c 'import json,sys; json.dump(json.loads(sys.argv[1]), open(sys.argv[2], "w"), indent=2)' "$items_json" "$STAGE/uploadedItems.json"

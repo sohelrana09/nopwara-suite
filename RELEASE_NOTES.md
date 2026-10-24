@@ -4,8 +4,16 @@ The Nopwara theme and all nine Nopwara plugins in one upload for nopCommerce **5
 
 | Zip | For |
 |---|---|
-| `nopwara-suite-1.4.0-nop5.00.zip` | nopCommerce 5.00 |
-| `nopwara-suite-1.4.0-nop4.90.zip` | nopCommerce 4.90.8 |
+| `nopwara-suite-1.4.1-nop5.00.zip` | nopCommerce 5.00 |
+| `nopwara-suite-1.4.1-nop4.90.zip` | nopCommerce 4.90.8 |
+
+## What's new in v1.4.1: paged reviews and Q&A
+
+Product pages with many reviews or questions no longer get very long.
+
+- **Reviews are paged:** 5 per page, with page numbers and "1–5 of 42". Reviews on later pages aren't added to the page until their page is opened, so even products with hundreds of reviews stay light. Change the page size with `nopwarathemesettings.reviewspagesize`.
+- **Questions are paged too** ([Product Q&A](https://github.com/sohelrana09/nopwara-product-qa) 1.01): the "Show all" button is replaced by a pager. The plugin's "Questions shown" setting is now "Questions per page" (default 5). All questions stay in the page for search engines and the FAQ structured data.
+- **Fix:** review "helpful? yes / no" votes now work for every review. Before, their scripts failed for reviews on later pages.
 
 ## What's new in v1.4.0: no jQuery, image zoom, carousels
 

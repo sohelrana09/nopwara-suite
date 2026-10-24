@@ -85,9 +85,10 @@ for entry in "${PLUGINS[@]}"; do
     output="$NOP/src/Presentation/Nop.Web/Plugins/$system_name"
     [ -f "$output/plugin.json" ] || { echo "Build output not found: $output" >&2; exit 1; }
 
-    # only what the store needs: no Nop.Web apphost/runtime files (left by the Nop.Web project reference) and no symbols
+    # only what the store needs: no Nop.Web apphost/runtime files (left by the Nop.Web project reference), no symbols,
+    # and no runtimes/ (native libraries of Nop.Web's dependencies, which 4.90's ClearPluginAssemblies leaves behind)
     rsync -a \
-        --exclude 'Nop.Web' --exclude 'Nop.Web.*' --exclude '*.pdb' \
+        --exclude 'Nop.Web' --exclude 'Nop.Web.*' --exclude '*.pdb' --exclude 'runtimes' \
         "$output/" "$STAGE/Plugins/$system_name/"
 
     items_json+="$separator{\"Type\":\"Plugin\",\"SystemName\":\"$system_name\",\"SupportedVersion\":\"$NOP_VERSION\",\"DirectoryPath\":\"Plugins/$system_name/\"}"

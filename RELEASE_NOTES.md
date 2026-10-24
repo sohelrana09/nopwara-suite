@@ -4,25 +4,32 @@ The Nopwara theme and all nine Nopwara plugins in one upload for nopCommerce **5
 
 | Zip | For |
 |---|---|
-| `nopwara-suite-1.3.0-nop5.00.zip` | nopCommerce 5.00 |
-| `nopwara-suite-1.3.0-nop4.90.zip` | nopCommerce 4.90.8 |
+| `nopwara-suite-1.4.0-nop5.00.zip` | nopCommerce 5.00 |
+| `nopwara-suite-1.4.0-nop4.90.zip` | nopCommerce 4.90.8 |
 
-## What's new in v1.3.0: faster than DefaultClean
-
-On a 500-product test store, Nopwara now matches or beats nopCommerce's DefaultClean on every page we measured with Lighthouse: home, category, product and search, on desktop and mobile. It downloads less on every page, and it has no layout shift on desktop or on category and product pages.
+## What's new in v1.4.0: no jQuery, image zoom, carousels
 
 **Theme**
-- **Menus cost nothing until they open.** The mobile menu is built in the browser from the desktop menu the first time the drawer opens. Dropdown extras wait in `<template>` tags until a dropdown opens.
-- **One cached icon sprite** (`Content/icons.svg`) replaces dozens of inline SVGs, and short component classes replace long repeated utility lists. A category page's HTML went from about 241 KB to about 176 KB.
-- **About 77 KB less JavaScript (gzipped) on most pages:** jQuery UI now loads only when a page uses one of its widgets, and jQuery Migrate is gone. No script blocks the first paint any more.
-- **Images:** `srcset`/`sizes`, `width`/`height`, eager loading for the first row of products, and `fetchpriority` for the main product picture. On the home page, the first slide of nopCommerce's slider is preloaded and its height is reserved, so nothing jumps. If your slides aren't 1200 × 500, set `nopwarathemesettings.sliderratio` (e.g. `1600 / 560`) in All settings.
-- **Hover prefetch:** pages start loading when the pointer rests on a link, in Chromium browsers. Cart, checkout and account links are excluded.
-- **No layout shift from the menu bar** (compact mode is decided before the first paint) or from the search page's advanced-search toggle, which is now Alpine instead of jQuery.
-- **Speed budget in CI:** every push to the theme builds a sample store and runs Lighthouse against fixed limits on the score, LCP, CLS, blocking time, script/CSS/HTML size and DOM size, for both 5.00 and 4.90. A change that makes the theme slower fails the check.
+- **No jQuery.** The theme no longer loads jQuery, jQuery UI, jQuery Migrate, jquery.validate or nopCommerce's `public.*.js` files. Every storefront view that used them is rewritten with Alpine.js and plain JavaScript, including the catalog, product page, cart, both checkouts, account, orders and wishlist. A small runtime, `Content/js/nopwara-core.js` (about 7 KB gzipped, against about 44 KB for the scripts it replaces), handles requests, form validation from nopCommerce's `data-val-*` attributes, dialogs, the ajax cart, catalog filters and product attribute changes.
+- **Third-party plugins keep working.** nopCommerce's global helpers (`setLocation`, `AjaxCart`, `Billing`, `Checkout` and others) still exist as jQuery-free versions. If a plugin ships its own jQuery code (for example Misc.RFQ, PayPal Commerce or Avalara), jQuery loads only on the pages where that plugin's script uses it. For plugins that load their scripts later by ajax, set `nopwarathemesettings.jquerycompat` to `true` to load jQuery on every page.
+- **Product image zoom.** Hover zoom on desktop; in the lightbox, pinch, double-tap or wheel to zoom, drag to pan and swipe to change picture. Requires "Picture zoom" to be enabled in the media settings.
+- **Carousels:** featured products, bestsellers, related products and "also purchased" are swipeable rows with previous/next buttons. They use CSS scroll snapping, with no slider library.
+- **Product ribbons:** a "-20%" ribbon when a product has an old price, and "New" for products marked as new.
+- **Home trust strip,** built from your store's settings, so it only promises what the store actually does:
+  - free delivery over a set amount (only when that setting is on);
+  - returns (only when return requests are on);
+  - secure checkout and customer support.
+
+  Turn it off with `nopwarathemesettings.showtruststrip = false`.
+- **Faster:** on our 500-product test store, mobile Lighthouse scores went up again, to 91 / 97 / 100 / 98 (home / category / product / search), against DefaultClean's 85 / 89 / 96 / 94.
+- **CI:** a new check fails the build if jQuery code appears in the theme or on a rendered page.
+- **Fixes:**
+  - the product lightbox no longer opens under the header;
+  - the order print page now uses the theme stylesheet (it linked a `print.css` that didn't exist).
 
 **Plugins**
-- [Mega menu](https://github.com/sohelrana09/nopwara-mega-menu) 1.03: passes icon names, so themes can use an icon sprite.
-- [Quick view](https://github.com/sohelrana09/nopwara-quick-view) 1.01 and [Instant search](https://github.com/sohelrana09/nopwara-instant-search) 1.01: their scripts load in the footer instead of blocking the first paint. Instant search also avoids a nopCommerce minifier bug that could break the whole script bundle.
+- [Single-page checkout](https://github.com/sohelrana09/nopwara-checkout) 1.12: no jQuery with the Nopwara theme. It also fixes a bug where guest checkout posted the login form instead of the checkout form when "show login on checkout" was on.
+- [Quick view](https://github.com/sohelrana09/nopwara-quick-view) 1.02 and [Product bundles](https://github.com/sohelrana09/nopwara-bundles) 1.01: no jQuery with the Nopwara theme. With other themes, they fall back to jQuery as before.
 
 | Included | Repo |
 |---|---|

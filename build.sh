@@ -96,7 +96,7 @@ for entry in "${PLUGINS[@]}"; do
     echo "  Plugins/$system_name"
 done
 
-rsync -a --exclude '.git' --exclude '.gitignore' --exclude 'node_modules' \
+rsync -a --exclude '.git' --exclude '.github' --exclude '.gitignore' --exclude 'node_modules' \
     "$NOP/src/Presentation/Nop.Web/Themes/Nopwara/" "$STAGE/Themes/Nopwara/"
 items_json+=",{\"Type\":\"Theme\",\"SystemName\":\"Nopwara\",\"SupportedVersion\":\"$NOP_VERSION\",\"DirectoryPath\":\"Themes/Nopwara/\"}]"
 echo "  Themes/Nopwara"

@@ -4,8 +4,12 @@ The Nopwara theme and all nine Nopwara plugins in one upload for nopCommerce **5
 
 | Zip | For |
 |---|---|
-| `nopwara-suite-1.4.1-nop5.00.zip` | nopCommerce 5.00 |
-| `nopwara-suite-1.4.1-nop4.90.zip` | nopCommerce 4.90.8 |
+| `nopwara-suite-1.4.2-nop5.00.zip` | nopCommerce 5.00 |
+| `nopwara-suite-1.4.2-nop4.90.zip` | nopCommerce 4.90.8 |
+
+## What's new in v1.4.2
+
+- **Fix:** pages with a product carousel (home page, related products) no longer scroll sideways or show an extra scrollbar. Hidden screen-reader labels inside the carousel cards were stretching the page wider than the window.
 
 ## What's new in v1.4.1: paged reviews and Q&A
 
